@@ -27,6 +27,7 @@ async function fetchData () {
     }
 }
 fetchData();
+
 function displayMeals (meals) {
     meals.forEach (meal => {
         const mealDiv = document.createElement ('div');
@@ -37,10 +38,48 @@ function displayMeals (meals) {
                     <h3 class="text-xl font-bold text-gray-800 mb-2">${meal.strMeal}</h3>
                     <p class="text-gray-600 text-sm mb-5">${meal.strInstructions.substring(0, 70)}...</p>
                     <div class="flex justify-end">
-                    <button id="btnDetails" class="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-1 px-5 rounded transition-colors cursor-pointer text-right" >VIEW DETAILS</button>
+                    <button id="btnDetails" onclick="showMealDetails('${meal.idMeal}')" class="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-1 px-5 rounded transition-colors cursor-pointer text-right" >VIEW DETAILS</button>
                     </div>
                 </div>
         `;
         foodsContainer.appendChild (mealDiv);
     });
+}
+
+// Show Modal 
+async function showMealDetails(mealId) {
+            // console.log(mealId);
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            
+            modal.classList.remove('hidden');
+            modalContent.innerHTML = '<div class="flex justify-center items-center py-12"></div>';
+            
+            try {
+                const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
+                const data = await response.json();
+                const meal = data.meals[0];
+                
+                modalTitle.textContent = meal.strMeal;
+                
+                modalContent.innerHTML = `
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="w-full rounded-lg shadow-lg">
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Instructions</h3>
+                            <p class="text-gray-700 leading-relaxed whitespace-pre-line">${meal.strInstructions}</p>
+                        </div>
+                    </div>
+                 `;
+            } catch (error) {
+                modalContent.innerHTML = `<p class="text-red-600 text-center py-12">Error loading meal details: ${error.message}</p>`;
+            }
+        }
+
+// Close modal
+function closeModal() {
+    document.getElementById('modal').classList.add('hidden');
 }
