@@ -1,86 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>DOM FOOD</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header  -->
     <header class="flex justify-center p-4">
-        <img class="w-50 h-auto" src="assets/logo.png" alt="logo">
+      <img class="w-50 h-auto" src="assets/logo.png" alt="logo" />
     </header>
 
     <!-- Hero  -->
-     <section class="relative bg-gradient-to-r from-gray-600 via-gray-800 to-gray-600 text-white py-20 md:py-32">
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute inset-0 bg-[url('assets/page-title.jpg')]"></div>
-        </div>
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Search Your<br>Favorite Recipe</h1>
-            <p class="text-lg md:text-xl text-gray-300 mb-8">A bundle of simple ingredients open the fresh, vibrant<br>flavors of Greek cooking</p>
-        </div>
+    <section
+      class="relative bg-gradient-to-r from-gray-600 via-gray-800 to-gray-600 text-white py-20 md:py-32"
+    >
+      <div class="absolute inset-0 opacity-20">
+        <div class="absolute inset-0 bg-[url('assets/page-title.jpg')]"></div>
+      </div>
+      <div class="container mx-auto px-4 text-center relative z-10">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          Search Your<br />Favorite Recipe
+        </h1>
+        <p class="text-lg md:text-xl text-gray-300 mb-8">
+          A bundle of simple ingredients open the fresh, vibrant<br />flavors of
+          Greek cooking
+        </p>
+      </div>
     </section>
 
-   <!-- Search Bar -->
+    <!-- Search Bar -->
     <section class="container mx-auto px-4 my-10">
-        <div class="max-w-2xl mx-auto">
-            <div class="flex justify-between items-center border border-gray-300 rounded-lg overflow-hidden shadow-lg">
-            <input id="search-input" type="text" placeholder="Search..." class="flex-1 px-6 py-4 text-gray-700 focus:outline-none">
-                <button class="bg-orange-400 hover:bg-orange-500 px-6 py-4 transition-colors cursor-pointer">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </button>
-            </div>
+      <div class="max-w-2xl mx-auto">
+        <div
+          class="flex justify-between items-center border border-gray-300 rounded-lg overflow-hidden shadow-lg"
+        >
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search..."
+            onkeypress="if(event.key === 'Enter') searchMeals()"
+            class="flex-1 px-6 py-4 text-gray-700 focus:outline-none"
+          />
+          <button
+            onclick="searchMeals()"
+            class="bg-orange-400 hover:bg-orange-500 px-6 py-4 transition-colors cursor-pointer"
+          >
+            <svg
+              class="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </button>
         </div>
+      </div>
     </section>
 
     <!-- loading spinner -->
     <div id="loading" class="flex justify-center items-center">
-            <div class="h-16 w-16 animate-[spin_1s_linear_infinite] rounded-full border-4 border-l-0 border-r-0 border-double border-b-sky-400 border-t-sky-700"></div>
+      <div
+        class="h-16 w-16 animate-[spin_1s_linear_infinite] rounded-full border-4 border-l-0 border-r-0 border-double border-b-sky-400 border-t-sky-700"
+      ></div>
     </div>
 
     <!-- Error Message -->
-    <div id="error" class="hidden">
-        <p class="text-center text-red-500">An error occurred while fetching data. Please try again.</p>
-    </div>
+    <div id="error" class="hidden text-center text-red-600 text-xl"></div>
 
     <!-- Recipes Container -->
     <section class="container mx-auto px-20 my-10">
-        <h2 class="text-3xl md:text-4xl font-semibold text-center mb-10">Latest Recipes</h2>
-        <div id="recipes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-        </div>
+      <h2 class="text-3xl md:text-4xl font-semibold text-center mb-10">
+        Latest Recipes
+      </h2>
+      <div
+        id="recipes"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      ></div>
     </section>
 
     <!-- Popup -->
-    <div id="modal" class="hidden fixed inset-0 bg-orange/30 backdrop-blur-sm bg-opacity-25 flex items-center justify-center z-50 p-4">
-            <div class="bg-orange-50 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <div class="sticky top-0 bg-orange-50 border-b px-6 py-4 flex justify-between items-center">
-                    <h2 id="modal-title" class="text-2xl font-bold text-gray-800"></h2>
-                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-xl font-bold cursor-pointer">
-                        X
-                    </button>
-                </div>
-                <div id="modal-content" class="p-6"></div>
-            </div>
+    <div
+      id="modal"
+      class="hidden fixed inset-0 bg-orange/30 backdrop-blur-sm bg-opacity-25 flex items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-orange-50 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-orange-50 border-b px-6 py-4 flex justify-between items-center"
+        >
+          <h2 id="modal-title" class="text-2xl font-bold text-gray-800"></h2>
+          <button
+            onclick="closeModal()"
+            class="text-gray-500 hover:text-gray-700 text-xl font-bold cursor-pointer"
+          >
+            X
+          </button>
+        </div>
+        <div id="modal-content" class="p-6"></div>
+      </div>
     </div>
 
     <!-- Scroll to Top Button -->
-        <button 
-            id="scroll-top-btn" 
-            onclick="scrollToTop()" 
-            class="hidden fixed bottom-8 right-6 bg-orange-400 text-white p-2 rounded-full shadow-lg hover:bg-orange-500 transition-all duration-300 z-40"
-            title="Scroll to top"
+    <section>
+      <button
+        id="scroll-top-btn"
+        onclick="scrollToTop()"
+        class="hidden fixed bottom-8 right-6 bg-orange-400 text-white p-2 rounded-full shadow-lg hover:bg-orange-500 transition-all duration-300 z-40 cursor-pointer"
+        title="Scroll to top"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-            </svg>
-        </button>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 10l7-7m0 0l7 7m-7-7v18"
+          />
+        </svg>
+      </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-sm text-gray-400 mb-4 md:mb-0">
+            Copyright © 2025 - All right reserved
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="hover:text-yellow-400 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="hover:text-yellow-400 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.35 3.608 1.325.975.975 1.263 2.242 1.325 3.608.058 1.266.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.35 2.633-1.325 3.608-.975.975-2.242 1.263-3.608 1.325-1.266.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.35-3.608-1.325-.975-.975-1.263-2.242-1.325-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.35-2.633 1.325-3.608C4.533 2.513 5.8 2.225 7.166 2.163 8.432 2.105 8.812 2.163 12 2.163zm0-2.163C8.741 0 8.332.013 7.052.072c-1.675.077-3.163.39-4.356 1.583C1.503 2.848 1.19 4.336 1.113 6 .054 7 .041 7 .041 12s-.013 5 .072 6c-.077 1.675-.39 3.163-1.583 4.356C2.848 22.497 4.336 22.81 6 22.887c1 .059 1 .072 6 .072s5-.013 6-.072c1.675-.077 3.163-.39 4.356-1.583 1.193-1.193 1.506-2.681 1.583-4.356.059-1 .072-1 .072-6s-.013-5-.072-6c-.077-1.675-.39-3.163-1.583-4.356C19.163.39 17.675.077 16 .072 15 .013 14.589 0 12 0z"
+                />
+                <path
+                  d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998zM18.406 4.594a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="hover:text-yellow-400 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.466.099 2.797.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <script src="scripts.js"></script>
-
-</body>
+  </body>
 </html>
