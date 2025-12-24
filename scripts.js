@@ -3,10 +3,11 @@ const loadingSpinner = document.getElementById ('loading');
 const errorDiv = document.getElementById ('error');
 const foodsContainer = document.getElementById ('recipes');
 
-async function fetchData () {
-    
+// Fetch data 
+async function fetchData (searchMeal = '') {
+
     try {
-        const response = await fetch(url);
+        const response = await fetch(url + searchMeal);
         const data = await response.json();
         console.log(data.meals);
 
@@ -19,8 +20,10 @@ async function fetchData () {
         if (data.meals && data.meals.length > 0) {
             displayMeals(data.meals);
         } else {
+             errorDiv.textContent = searchMeal 
+            ? `No meals found for "${searchMeal}". Try a different search term.`
+            : 'No meals found';
             errorDiv.classList.remove('hidden');
-            // errorDiv.innerText  = 'No meals found.';
         }
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -28,6 +31,7 @@ async function fetchData () {
 }
 fetchData();
 
+// Display Meals
 function displayMeals (meals) {
     meals.forEach (meal => {
         const mealDiv = document.createElement ('div');
@@ -77,9 +81,30 @@ async function showMealDetails(mealId) {
             } catch (error) {
                 modalContent.innerHTML = `<p class="text-red-600 text-center py-12">Error loading meal details: ${error.message}</p>`;
             }
-        }
+}
 
 // Close modal
 function closeModal() {
     document.getElementById('modal').classList.add('hidden');
 }
+
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scroll-top-btn');
+        
+        // Show/hide scroll button based on scroll position
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.remove('hidden');
+            } else {
+                scrollTopBtn.classList.add('hidden');
+            }
+        });
+        
+        // Smooth scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+

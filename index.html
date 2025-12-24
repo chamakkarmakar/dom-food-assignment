@@ -27,7 +27,7 @@
     <section class="container mx-auto px-4 my-10">
         <div class="max-w-2xl mx-auto">
             <div class="flex justify-between items-center border border-gray-300 rounded-lg overflow-hidden shadow-lg">
-            <input type="text" placeholder="Search..." class="flex-1 px-6 py-4 text-gray-700 focus:outline-none">
+            <input id="search-input" type="text" placeholder="Search..." class="flex-1 px-6 py-4 text-gray-700 focus:outline-none">
                 <button class="bg-orange-400 hover:bg-orange-500 px-6 py-4 transition-colors cursor-pointer">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -49,14 +49,14 @@
 
     <!-- Recipes Container -->
     <section class="container mx-auto px-20 my-10">
-        <h2 class="text-3xl md:text:4xl font-semibold text-center mb-10">Latest Recipes</h2>
+        <h2 class="text-3xl md:text-4xl font-semibold text-center mb-10">Latest Recipes</h2>
         <div id="recipes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
         </div>
     </section>
 
     <!-- Popup -->
-        <div id="modal" class="hidden fixed inset-0 bg-orange/30 backdrop-blur-sm bg-opacity-25 flex items-center justify-center z-50 p-4">
+    <div id="modal" class="hidden fixed inset-0 bg-orange/30 backdrop-blur-sm bg-opacity-25 flex items-center justify-center z-50 p-4">
             <div class="bg-orange-50 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                 <div class="sticky top-0 bg-orange-50 border-b px-6 py-4 flex justify-between items-center">
                     <h2 id="modal-title" class="text-2xl font-bold text-gray-800"></h2>
@@ -66,7 +66,19 @@
                 </div>
                 <div id="modal-content" class="p-6"></div>
             </div>
-        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+        <button 
+            id="scroll-top-btn" 
+            onclick="scrollToTop()" 
+            class="hidden fixed bottom-8 right-6 bg-orange-400 text-white p-2 rounded-full shadow-lg hover:bg-orange-500 transition-all duration-300 z-40"
+            title="Scroll to top"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+            </svg>
+        </button>
 
     <script src="scripts.js"></script>
 
