@@ -65,21 +65,22 @@
       </div>
     </section>
 
-    <!-- loading spinner -->
-    <div id="loading" class="flex justify-center items-center">
-      <div
-        class="h-16 w-16 animate-[spin_1s_linear_infinite] rounded-full border-4 border-l-0 border-r-0 border-double border-b-sky-400 border-t-sky-700"
-      ></div>
-    </div>
-
-    <!-- Error Message -->
-    <div id="error" class="hidden text-center text-red-600 text-xl"></div>
-
     <!-- Recipes Container -->
     <section class="container mx-auto px-20 my-10">
       <h2 class="text-3xl md:text-4xl font-semibold text-center mb-10">
         Latest Recipes
       </h2>
+
+      <!-- loading spinner -->
+      <div id="loading" class="flex justify-center items-center">
+        <div
+          class="h-16 w-16 animate-[spin_1s_linear_infinite] rounded-full border-4 border-l-0 border-r-0 border-double border-b-sky-400 border-t-sky-700"
+        ></div>
+      </div>
+      <!-- Error Message -->
+      <div id="error" class="hidden text-center text-red-600 text-xl my-10"></div>
+
+      <!-- Recipes Grid -->
       <div
         id="recipes"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
@@ -134,7 +135,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-gray-800 text-white py-8 px-20">
       <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row justify-between items-center">
           <p class="text-sm text-gray-400 mb-4 md:mb-0">

@@ -21,8 +21,9 @@ async function fetchData(searchMeal = "") {
       displayMeals(data.meals);
     } else {
       errorDiv.textContent = searchMeal
-        ? `No meals found for "${searchMeal}". Try a different search term.`
+        ? `No meals found for "${searchMeal}" `
         : "No meals found";
+      foodsContainer.innerHTML = "";
       errorDiv.classList.remove("hidden");
     }
   } catch (error) {
@@ -51,17 +52,20 @@ function displayMeals(meals) {
     }" class="w-full h-48 object-cover">
                 <div class="p-5">
                     <h3 class="text-xl font-bold text-gray-800 mb-2">${
-                      meal.strMeal
+                      meal.strMeal.toUpperCase()
                     }</h3>
                     <p class="text-gray-600 text-sm mb-5">${meal.strInstructions.substring(
                       0,
-                      70
+                      100
                     )}...</p>
-                    <div class="flex justify-end">
-                    <button id="btnDetails" onclick="showMealDetails('${
+                     <div class="flex justify-end">
+                <button id="btnDetails" onclick="showMealDetails('${
                       meal.idMeal
-                    }')" class="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-1 px-5 rounded transition-colors cursor-pointer text-right" >VIEW DETAILS</button>
-                    </div>
+                    }')" 
+                class="w-[60%] rounded-lg py-2 font-medium text-orange-400 shadow-[0px_0px_10px_#E2DADA] duration-500 hover:scale-95 hover:bg-orange-500 hover:text-white hover:shadow-xl cursor-pointer dark:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.8)]">
+                    View Details
+                </button>
+            </div>
                 </div>
         `;
     foodsContainer.appendChild(mealDiv);
@@ -92,7 +96,7 @@ async function showMealDetails(mealId) {
     const data = await response.json();
     const meal = data.meals[0];
 
-    modalTitle.textContent = meal.strMeal;
+    modalTitle.textContent = meal.strMeal.toUpperCase();
 
     modalContent.innerHTML = `
                     <div class="grid md:grid-cols-2 gap-6">
